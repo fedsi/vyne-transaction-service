@@ -1,0 +1,3 @@
+rootProject.name = 'vyne-transaction-service'
+
+include(':transaction-service')

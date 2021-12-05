@@ -1,0 +1,15 @@
+server:
+  servlet:
+    context-path: "/api"
+
+spring:
+  sql:
+    init:
+      mode: embedded
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: jdbc:h2:mem:transactionservice
+    platform: h2
+    initilization-mode: always

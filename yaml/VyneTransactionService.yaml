@@ -1,0 +1,168 @@
+swagger: "2.0"
+info:
+  description: "PayVyne assignment. REST Transaction Service"
+  version: "1.0.0"
+  title: "Transaction Service"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "federico.silveri21@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/api"
+tags:
+  - name: "Transaction"
+    description: "Everything about Transactions"
+schemes:
+  - "http"
+paths:
+  /transactions:
+    post:
+      tags:
+        - "Transaction"
+      summary: "Create a new Transaction"
+      description: "Create a new Transaction"
+      operationId: "saveTransaction"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "A Transaction object"
+          required: true
+          schema:
+            $ref: "#/definitions/Transaction"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Transaction"
+        "400":
+          description: "Invalid Transaction"
+  /transactions/find/:
+    get:
+      tags:
+        - "Transaction"
+      summary: "Finds all Transactions"
+      description: "Find all Transactions"
+      operationId: "getTransactions"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "status"
+          in: "query"
+          description: "Filter transaction by status"
+          required: false
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Transaction"
+  /transactions/find/{txId}:
+    get:
+      tags:
+        - "Transaction"
+      summary: "Find Transaction by id"
+      description: "Find Transaction by id"
+      produces:
+        - "application/vyne.transaction.service.v1+json"
+        - "application/vyne.transaction.service.v2+json"
+      parameters:
+        - name: "txId"
+          in: "path"
+          description: "transaction ID"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+  /transactions/{txId}:
+    put:
+      tags:
+        - "Transaction"
+      summary: "Update a transaction"
+      description: "Update a Transaction"
+      operationId: "updateTransaction"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "txId"
+          in: "path"
+          description: "Transaction ID"
+          required: true
+          type: "number"
+        - in: "body"
+          name: "body"
+          description: "A Transaction object"
+          required: true
+          schema:
+            $ref: "#/definitions/Transaction"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Transaction"
+        "400":
+          description: "Transaction not found"
+    delete:
+      tags:
+        - "Transaction"
+      summary: "Delete a Transaction"
+      description: "Cancel a Transaction"
+      operationId: "deleteTransaction"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "txId"
+          in: "path"
+          description: "Transaction ID"
+          required: true
+          type: "number"
+      responses:
+        "201":
+          description: "successful operation"
+        "400":
+          description: "Transaction not found"
+definitions:
+  Transaction:
+    type: "object"
+    required:
+      - "date"
+      - "status"
+      - "amount"
+      - "currency"
+    properties:
+      id:
+        type: "number"
+        readOnly: true
+        example: "1"
+        description: "Transaction id"
+      date:
+        type: "string"
+        format: "date"
+        example: "2021-12-05"
+        description: "Transaction date"
+      status:
+        type: "string"
+        example: "authorised"
+        description: "Transaction status"
+      amount:
+        type: "number"
+        example: "100"
+        description: "Transaction amount"
+      currency:
+        type: "string"
+        example: "GBP"
+        description: "Transaction currency"
+      description:
+        type: "string"
+        example: "custom description"
+        description: "Transaction optional description"
