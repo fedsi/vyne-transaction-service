@@ -18,7 +18,7 @@ The POST, PUT and DELETE endpoints are authenticated using Basic Auth.
 GET endpoints are not authenticated.
 
 ## Versioning
-This project uses API versioning only on _find/{{transactionId}}_ endpoint.
+This project uses API versioning only on _/transactions/find/{{transactionId}}_ endpoint.
 
 The two different versions can be called using the following Media Types:
  
@@ -80,7 +80,5 @@ _localhost:8080/api/transactions/{transactionId}_
 ```
 
 **DELETE** - Delete an existing transaction
-
-The offer must be active (expiration date > now)
 
 _localhost:8080/api/transactions/{{transactionId}}_
