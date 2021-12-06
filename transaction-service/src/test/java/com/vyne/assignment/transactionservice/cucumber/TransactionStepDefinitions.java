@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -27,8 +28,9 @@ public class TransactionStepDefinitions {
     private static final String X_CUSTOM_HEADER = "X-Custom-Header";
 
     @Given("we have a valid Transaction object")
-    public void weHaveAValidTransactionObject() {
-        transaction = new Transaction(1l, new Date(), "authorised", 100, "GBP", "description");
+    public void weHaveAValidTransactionObject() throws ParseException {
+        DateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+        transaction = new Transaction(2l, formatter.parse("2021-12-05"), "authorised", 100, "GBP", "description");
     }
 
     @When("the client post the transaction object")
@@ -63,8 +65,8 @@ public class TransactionStepDefinitions {
         assertThat(headers.containsKey(X_CUSTOM_HEADER), is(true));
     }
 
-    @Then("the response doesn't contains the custom header")
-    public void theResponseDoesnTContainsTheCustomHeader() {
+    @Then("the response doesn't contain the custom header")
+    public void theResponseDoesnTContainTheCustomHeader() {
         HttpHeaders headers = result.getHeaders();
         assertThat(headers.containsKey(X_CUSTOM_HEADER), is(false));
     }

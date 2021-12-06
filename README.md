@@ -30,6 +30,48 @@ application/vyne.transaction.service.v1+json
 ```
   application/vyne.transaction.service.v2+json
 ```
+## Filter
+
+The FindTransactionFilter will add a custom Header (_X-Custom-Header_) in the response to all GET endpoints.
+
+This functionality is tested with Cucumber (feature file: _transaction-service/src/test/resources/transaction/transaction.feature_)
+
+The first scenario check that the custom header is not included when we create a new transaction (POST)
+
+```
+Scenario: client makes call to create a new transaction POST /transactions
+    Given we have a valid Transaction object
+    When the client post the transaction object
+    Then the response status code is 201
+    And the response doesn't contain the custom header
+```
+The second one check that the custom header is included when we retrieve a transaction (GET) on both API version 1 and 2
+```
+Scenario Outline: client makes call to retrieve a single transaction using API version
+    When the client request a transaction by id using API version <apiVersion>
+    Then the response status code is 200
+    And the response contains the custom header
+    And the response transaction field are "<date>", "<status>", <amount>, "<currency>", "<description>"
+    
+    Examples:
+    | apiVersion | date        | status      | amount | currency | description                   |
+    | 1          | 2021-12-05  | authorised  | 100    | GBP      | description_from API Version1 |
+    | 2          | 2021-12-05  | authorised  | 100    | GBP      | description_from API Version2 |
+```
+
+To execute these tests, run this command from the repository root:
+```
+./gradlew cucumberTests
+```
+
+The result is a summary of all the configured scenarios:
+```
+3 Scenarios (3 passed)
+12 Steps (12 passed)
+0m9,331s
+```
+
+The full Cucumber report can  be found in the build folder (_transaction-service/build/cucumber-report.html_)
 ## Running
 
 Application entry point -  _TransactionServiceApplication_

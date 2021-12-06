@@ -4,7 +4,7 @@ Feature: Create a new transaction
     Given we have a valid Transaction object
     When the client post the transaction object
     Then the response status code is 201
-    And the response doesn't contains the custom header
+    And the response doesn't contain the custom header
 
   Scenario Outline: client makes call to retrieve a single transaction using API version
     When the client request a transaction by id using API version <apiVersion>
